@@ -61,8 +61,8 @@ runs:
       with:
         push: true
         tags: |
-          ${{ inputs.REPOSITORY }}/${{ inputs.REPOSITORY }}:${{ inputs.VERSION }}      
-          ${{ inputs.REPOSITORY }}/${{ inputs.REPOSITORY }}:latest        
+          ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:${{ inputs.VERSION }}      
+          ${{ inputs.REGISTRY }}/${{ inputs.REPOSITORY }}:latest        
 
     - uses: datawise-ai/actions-helm-deploy@main
       with: 
