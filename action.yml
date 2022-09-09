@@ -1,0 +1,78 @@
+name: "k8s deploy"
+description: "deploy to k8s"
+inputs: 
+inputs: 
+  PROJECT: 
+    required: true
+  APP:
+    required: true
+  INSTANCE:
+    required: true
+  VERSION:
+    required: true
+  VALUE_FILES:
+    required: true
+    default: ".github/helm/values.yml"
+  RELEASE:
+    required: true
+  CHART:
+    required: true
+  CHART_REPO:
+    required: false
+  CHART_REPO_ALIAS:
+    required: false
+  KUBECONFIG_FILE:
+    required: true
+  REGISTRY:
+    required: true
+  REPOSITORY:
+    required: true
+  DOCKER_USER: 
+    required: true
+    default: "builder"
+  DOCKER_PASS:
+    required: false
+runs:
+  using: "composite"
+  steps:
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: setup docker context for buildx
+      id: buildx-context
+      shell: bash       
+      run: |
+        docker context create builders || true
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+      with:
+        endpoint: builders
+
+    - name: Login to Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ input.REGISTRY }}
+        username: ${{ input.DOCKER_USER} }
+        password: ${{ input.DOCKER_PASS }}        
+
+    - name: Build and push container
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: |
+          ${{ input.REPOSITORY }}/${{ input.REPOSITORY }}:${{ input.VERSION }}      
+          ${{ input.REPOSITORY }}/${{ input.REPOSITORY }}:${{ input.VERSION }}:latest        
+
+    - uses: datawise-ai/actions-helm-deploy@main
+      with: 
+        PROJECT: ${{ input.PROJECT }}
+        APP: ${{ input.APP }}
+        INSTANCE: ${{ input.INSTANCE }}
+        KUBECONFIG_FILE: '${{ input.KUBECONFIG_FILE }}'
+        VERSION: ${{ input.VERSION }}
+        CHART: ${{ input.chart }}
+        CHART_REPO_ALIAS: ${{ input.CHART_REPO_ALIAS }}
+        CHART_REPO: ${{ input.CHART_REPO }}
+        RELEASE: ${{ input.RELEASE }}
