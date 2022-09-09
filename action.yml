@@ -52,26 +52,26 @@ runs:
     - name: Login to Registry
       uses: docker/login-action@v2
       with:
-        registry: ${{ input.REGISTRY }}
-        username: ${{ input.DOCKER_USER }}
-        password: ${{ input.DOCKER_PASS }}        
+        registry: ${{ inputs.REGISTRY }}
+        username: ${{ inputs.DOCKER_USER }}
+        password: ${{ inputs.DOCKER_PASS }}        
 
     - name: Build and push container
       uses: docker/build-push-action@v3
       with:
         push: true
         tags: |
-          ${{ input.REPOSITORY }}/${{ input.REPOSITORY }}:${{ input.VERSION }}      
-          ${{ input.REPOSITORY }}/${{ input.REPOSITORY }}:${{ input.VERSION }}:latest        
+          ${{ inputs.REPOSITORY }}/${{ inputs.REPOSITORY }}:${{ inputs.VERSION }}      
+          ${{ inputs.REPOSITORY }}/${{ inputs.REPOSITORY }}:${{ inputs.VERSION }}:latest        
 
     - uses: datawise-ai/actions-helm-deploy@main
       with: 
-        PROJECT: ${{ input.PROJECT }}
-        APP: ${{ input.APP }}
-        INSTANCE: ${{ input.INSTANCE }}
-        KUBECONFIG_FILE: '${{ input.KUBECONFIG_FILE }}'
-        VERSION: ${{ input.VERSION }}
-        CHART: ${{ input.chart }}
-        CHART_REPO_ALIAS: ${{ input.CHART_REPO_ALIAS }}
-        CHART_REPO: ${{ input.CHART_REPO }}
-        RELEASE: ${{ input.RELEASE }}
+        PROJECT: ${{ inputs.PROJECT }}
+        APP: ${{ inputs.APP }}
+        INSTANCE: ${{ inputs.INSTANCE }}
+        KUBECONFIG_FILE: '${{ inputs.KUBECONFIG_FILE }}'
+        VERSION: ${{ inputs.VERSION }}
+        CHART: ${{ inputs.chart }}
+        CHART_REPO_ALIAS: ${{ inputs.CHART_REPO_ALIAS }}
+        CHART_REPO: ${{ inputs.CHART_REPO }}
+        RELEASE: ${{ inputs.RELEASE }}
