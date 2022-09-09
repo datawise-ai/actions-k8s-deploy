@@ -1,7 +1,6 @@
 name: "k8s deploy"
 description: "deploy to k8s"
 inputs: 
-inputs: 
   PROJECT: 
     required: true
   APP:
