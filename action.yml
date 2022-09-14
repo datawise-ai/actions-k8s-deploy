@@ -5,6 +5,8 @@ inputs:
     required: true
   APP:
     required: true
+  SERVICE:
+    required: true    
   INSTANCE:
     required: true
   VERSION:
@@ -70,6 +72,7 @@ runs:
       with: 
         PROJECT: ${{ inputs.PROJECT }}
         APP: ${{ inputs.APP }}
+        APP: ${{ inputs.SERVICE }}
         INSTANCE: ${{ inputs.INSTANCE }}
         KUBECONFIG_FILE: '${{ inputs.KUBECONFIG_FILE }}'
         VERSION: ${{ inputs.VERSION }}
